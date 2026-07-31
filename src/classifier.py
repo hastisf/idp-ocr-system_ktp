@@ -21,6 +21,7 @@ def is_ktp(image_bytes: bytes, api_key: str) -> bool:
         " markdown formatting or extra text."
     )
 
+    try:
     response = client.chat.completions.create(
         model="qwen/qwen2.5-vl-72b-instruct:free",
         messages=[{
@@ -37,6 +38,8 @@ def is_ktp(image_bytes: bytes, api_key: str) -> bool:
         }],
         response_format={"type": "json_object"},
     )
+except Exception as e:
+    raise Exception(f"OpenRouter Error: {e}")
 
     content = response.choices[0].message.content.strip()
     result = json.loads(content)
