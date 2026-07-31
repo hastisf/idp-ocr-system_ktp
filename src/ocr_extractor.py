@@ -1,18 +1,19 @@
-import json
 import io
-from PIL import Image
+import json
 import google.generativeai as genai
+from PIL import Image
+
 
 def extract_ktp_data(image_bytes: bytes, api_key: str) -> dict:
-    """Extracts KTP fields using Google Gemini 1.5 Flash."""
-    genai.configure(api_key=api_key)
-    
-    # Model 1.5 Flash adalah model paling stabil & gratis
-    model = genai.GenerativeModel("gemini-1.5-flash")
+  """Extracts KTP fields using Google Gemini 1.5 Flash."""
+  genai.configure(api_key=api_key)
 
-    image = Image.open(io.BytesIO(image_bytes))
+  # Gunakan prefix 'models/' agar tidak bentrok dengan v1beta API
+  model = genai.GenerativeModel("models/gemini-1.5-flash")
 
-    prompt = """
+  image = Image.open(io.BytesIO(image_bytes))
+
+  prompt = """
     Extract all information from this Indonesian KTP image and return it strictly as a valid JSON object.
     Translate field names and values to clean, standard English.
 
@@ -44,12 +45,12 @@ def extract_ktp_data(image_bytes: bytes, api_key: str) -> dict:
     4. Standardize nationality values to 'Indonesian' or 'Foreigner'.
     """
 
-    response = model.generate_content([prompt, image])
-    content = response.text.strip()
+  response = model.generate_content([prompt, image])
+  content = response.text.strip()
 
-    if content.startswith("```"):
-        content = content.split("```")[1]
-        if content.startswith("json"):
-            content = content[4:]
+  if content.startswith("```"):
+    content = content.split("```")[1]
+    if content.startswith("json"):
+      content = content[4:]
 
-    return json.loads(content.strip())
+  return json.loads(content.strip())
