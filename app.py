@@ -1,0 +1,277 @@
+import time
+import json
+import sqlite3
+from datetime import datetime
+import pandas as pd
+import streamlit as st
+
+from src.classifier import classify_ktp
+from src.ocr_extractor import extract_ktp_data
+from src.validator import validate_nik
+from src.database import init_db
+
+# Configuration
+st.set_page_config(
+    page_title="VeriKTP AI",
+    layout="centered"
+)
+
+# Initialize Database
+init_db()
+
+# Custom CSS for clean UI (No emojis/logos)
+st.markdown("""
+    <style>
+    /* Background */
+    .stApp {
+        background-color: #F8FAFC;
+        font-family: 'Inter', -apple-system, sans-serif;
+    }
+    
+    /* Top Brand Title */
+    .brand-title {
+        color: #334155;
+        font-weight: 700;
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+    
+    /* Card Style */
+    .custom-card {
+        background-color: #FFFFFF;
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 20px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        border: 1px solid #E2E8F0;
+    }
+    
+    /* Text Badge */
+    .ai-badge {
+        background-color: #F1F5F9;
+        color: #475569;
+        padding: 6px 14px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 600;
+        display: inline-block;
+        margin-top: 12px;
+    }
+    
+    /* Field Result Card */
+    .info-box {
+        background-color: #F8FAFC;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-bottom: 8px;
+        border: 1px solid #E2E8F0;
+    }
+    .info-label {
+        font-size: 11px;
+        font-weight: 700;
+        color: #64748B;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 2px;
+    }
+    .info-value {
+        font-size: 14px;
+        font-weight: 600;
+        color: #0F172A;
+    }
+    
+    /* Subtitle Tag */
+    .sub-tag {
+        color: #6366F1;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Footer */
+    .footer-text {
+        text-align: center;
+        color: #94A3B8;
+        font-size: 12px;
+        margin-top: 30px;
+        padding-bottom: 20px;
+    }
+
+    /* Hide Streamlit default components */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    </style>
+""", unsafe_allow_html=True)
+
+# Navigation
+st.markdown('<div class="brand-title">VeriKTP AI</div>', unsafe_allow_html=True)
+tab_verif, tab_history = st.tabs(["Upload & Verification", "Database History"])
+
+with tab_verif:
+    # Header Card
+    st.markdown("""
+        <div class="custom-card">
+            <div class="sub-tag">AI Identity Verification</div>
+            <h1 style="font-size: 26px; margin: 6px 0 10px 0; color: #0F172A;">VeriKTP <span style="color: #6366F1;">AI</span></h1>
+            <p style="color: #475569; font-size: 14px; line-height: 1.5; margin: 0;">
+                VeriKTP AI is an AI-powered application for Indonesian Identity Card verification. 
+                The system classifies uploaded documents, extracts information using AI-based OCR, 
+                validates extracted data, and stores verification results in a database.
+            </p>
+            <div class="ai-badge">AI Model: Google Gemini 2.0 Flash</div>
+        </div>
+    """, unsafe_allow_html=True)
+
+    # Upload Document Section
+    st.subheader("Upload Document")
+    uploaded_file = st.file_uploader("Drop your KTP here or click to browse", type=["png", "jpg", "jpeg"], label_visibility="collapsed")
+
+    if uploaded_file:
+        st.image(uploaded_file, caption="Selected Document", use_container_width=True)
+
+    process_btn = st.button("Process Document", type="primary", use_container_width=True)
+
+    # Verification Result Section
+    st.subheader("Verification Result")
+    
+    if process_btn:
+        if not uploaded_file:
+            st.warning("Please upload a document image first.")
+        else:
+            api_key = st.secrets.get("OPENROUTER_API_KEY")
+            if not api_key:
+                st.error("Missing OpenRouter API Key in secrets.toml")
+            else:
+                image_bytes = uploaded_file.getvalue()
+                start_time = time.time()
+
+                with st.spinner("Processing document..."):
+                    try:
+                        # 1. Classification
+                        is_ktp = classify_ktp(image_bytes, api_key)
+                        
+                        if not is_ktp:
+                            st.error("Classification Failed: Uploaded document is NOT an Indonesian KTP.")
+                        else:
+                            # 2. OCR Extraction
+                            ocr_data = extract_ktp_data(image_bytes, api_key)
+                            
+                            # 3. Validation
+                            nik = ocr_data.get("nik")
+                            gender = ocr_data.get("gender")
+                            val_status = validate_nik(nik, gender)
+                            
+                            elapsed_time = f"{round(time.time() - start_time, 2)}s"
+
+                            # 4. Database Storage
+                            masked_nik = f"{nik[:6]}******{nik[-4:]}" if nik and len(nik) == 16 else "INVALID"
+                            name = ocr_data.get("name", "N/A")
+                            current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+                            conn = sqlite3.connect("ktp_ocr.db")
+                            cursor = conn.cursor()
+                            cursor.execute("""
+                                INSERT INTO ktp_logs (waktu_upload, nik_masked, nama, jenis_dokumen, status_validasi, model_ai, raw_json)
+                                VALUES (?, ?, ?, ?, ?, ?, ?)
+                            """, (current_time, masked_nik, name, "Indonesian KTP", val_status, "Llama-3.2-11b-Vision", json.dumps(ocr_data)))
+                            db_id = cursor.lastrowid
+                            conn.commit()
+                            conn.close()
+
+                            # Overall Status Banner
+                            st.markdown(f"""
+                                <div class="custom-card" style="text-align: center; background-color: #EEF2FF; border-color: #C7D2FE;">
+                                    <div style="font-size: 16px; font-weight: 700; color: #4338CA;">{val_status}</div>
+                                    <div style="font-size: 12px; color: #6366F1; margin-top: 2px;">Overall Validation Status</div>
+                                </div>
+                            """, unsafe_allow_html=True)
+
+                            # Metric grid
+                            col1, col2 = st.columns(2)
+                            with col1:
+                                st.markdown('<div class="info-box"><div class="info-label">Classification</div><div class="info-value">Indonesian KTP</div></div>', unsafe_allow_html=True)
+                                st.markdown(f'<div class="info-box"><div class="info-label">Processing Time</div><div class="info-value">{elapsed_time}</div></div>', unsafe_allow_html=True)
+                            with col2:
+                                st.markdown('<div class="info-box"><div class="info-label">OCR Status</div><div class="info-value">Success</div></div>', unsafe_allow_html=True)
+                                st.markdown(f'<div class="info-box"><div class="info-label">Database ID</div><div class="info-value">#{db_id}</div></div>', unsafe_allow_html=True)
+
+                            # Extracted Info list
+                            st.subheader("Extracted Information")
+                            
+                            fields = [
+                                ("NIK", ocr_data.get("nik")),
+                                ("NAME", ocr_data.get("name")),
+                                ("BIRTH", ocr_data.get("place_and_date_of_birth")),
+                                ("GENDER", ocr_data.get("gender")),
+                                ("ADDRESS", ocr_data.get("address")),
+                                ("RT / RW", f"{ocr_data.get('rt', '-')} / {ocr_data.get('rw', '-')}"),
+                                ("VILLAGE", ocr_data.get("village_subdistrict")),
+                                ("DISTRICT", ocr_data.get("district")),
+                                ("RELIGION", ocr_data.get("religion")),
+                                ("MARITAL STATUS", ocr_data.get("marital_status")),
+                                ("OCCUPATION", ocr_data.get("occupation")),
+                                ("NATIONALITY", ocr_data.get("nationality")),
+                                ("VALID UNTIL", ocr_data.get("expiry_date")),
+                            ]
+
+                            for label, val in fields:
+                                display_val = val if val else "-"
+                                st.markdown(f'''
+                                    <div class="info-box">
+                                        <div class="info-label">{label}</div>
+                                        <div class="info-value">{display_val}</div>
+                                    </div>
+                                ''', unsafe_allow_html=True)
+
+                    except Exception as e:
+                        st.error(f"An error occurred during processing: {e}")
+
+with tab_history:
+    st.subheader("Processing History")
+    conn = sqlite3.connect("ktp_ocr.db")
+    try:
+        df = pd.read_sql_query("""
+            SELECT id AS "ID", waktu_upload AS "Timestamp", nik_masked AS "Masked NIK", 
+                   nama AS "Name", status_validasi AS "Validation Status" 
+            FROM ktp_logs ORDER BY id DESC
+        """, conn)
+        conn.close()
+        st.dataframe(df, use_container_width=True, hide_index=True)
+    except Exception as e:
+        st.error(f"Failed to fetch history: {e}")
+
+# Footer
+st.markdown(
+    """
+    <style>
+    .footer-container {
+        text-align: center;
+        color: #64748B;
+        font-size: 13px;
+        margin-top: 40px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        border-top: 1px solid #E2E8F0;
+    }
+    .footer-links a {
+        color: #6366F1;
+        text-decoration: none;
+        font-weight: 600;
+        margin: 0 10px;
+    }
+    .footer-links a:hover {
+        text-decoration: underline;
+    }
+    </style>
+    
+    <div class="footer-container">
+        <div>Hasti Sri Fatmawati | Data Analyst Portfolio 2026</div>
+        <div class="footer-links" style="margin-top: 8px;">
+            <a href="https://www.linkedin.com/in/username-kamu" target="_blank">LinkedIn</a> • 
+            <a href="https://github.com/username-kamu" target="_blank">GitHub</a>
+        </div>
+    </div>
+""",
+    unsafe_allow_html=True,
+)
