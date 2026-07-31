@@ -122,7 +122,7 @@ st.markdown(
 
 /* Styling Tombol Khusus HP / History */
     div[data-testid="stVerticalBlock"] div.stButton > button {
-        border: 1px solid #ff4b4b !important;
+        border: 2px solid #FF4B4B !important;
         background-color: #2b1114 !important;
         color: #ffffff !important;
         border-radius: 8px !important;
