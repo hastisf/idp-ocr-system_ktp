@@ -83,17 +83,53 @@ st.markdown(
         letter-spacing: 0.5px;
     }
 
-    .footer-text {
-        text-align: center;
-        color: #94A3B8;
-        font-size: 12px;
-        margin-top: 30px;
-        padding-bottom: 20px;
+    /* FIX TAB NAVIGATION: DATABASE HISTORY KELIATAN TEBAL & ADA BACKGROUND */
+    button[data-baseweb="tab"] {
+        font-size: 14px !important;
+        font-weight: 700 !important;
+        color: #1E293B !important;
+        background-color: #E2E8F0 !important;
+        border-radius: 20px !important;
+        padding: 8px 16px !important;
+        margin-right: 8px !important;
+        border: 1px solid #CBD5E1 !important;
     }
+
+    button[data-baseweb="tab"][aria-selected="true"] {
+        color: #FFFFFF !important;
+        background-color: #2563EB !important;
+        border-color: #2563EB !important;
+    }
+
+    /* FIX DROPZONE UPLOADER & TEKS "Drop your KTP here..." */
+    div[data-testid="stFileUploader"] label {
+        font-size: 16px !important;
+        font-weight: 700 !important;
+        color: #0F172A !important;
+        margin-bottom: 8px !important;
+    }
+    
+    div[data-testid="stFileUploaderDropzone"] {
+        border: 2px dashed #94A3B8 !important;
+        background-color: #FFFFFF !important;
+        border-radius: 12px !important;
+        padding: 24px 10px !important;
+        text-align: center !important;
+    }
+
+    /* TEKS INTRUKSI BIKIN JELAS, TEBAL & WARNA GELAP */
+    [data-testid="stFileUploaderDropzoneInstructions"],
+    [data-testid="stFileUploaderDropzoneInstructions"] div,
+    [data-testid="stFileUploaderDropzoneInstructions"] span {
+        color: #0F172A !important;
+        font-weight: 700 !important;
+        font-size: 14px !important;
+        display: block !important;
+    }   
 
     /* Styling Tombol Khusus */
     div[data-testid="stVerticalBlock"] div.stButton > button {
-        border: 2px solid #FF4B4B !important;
+        border: 1px solid #FF4B4B !important;
         background-color: #2b1114 !important;
         color: #ffffff !important;
         border-radius: 8px !important;
@@ -108,10 +144,6 @@ st.markdown(
         color: #ffffff !important;
         border-color: #ff4b4b !important;
         box-shadow: 0 0 8px rgba(255, 75, 75, 0.5) !important;
-    }
-
-    [data-testid="stFileUploaderDropzoneInstructions"] {
-        display: none !important;
     }
 
     #MainMenu {visibility: hidden;}
