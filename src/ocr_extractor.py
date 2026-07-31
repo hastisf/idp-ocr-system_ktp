@@ -46,7 +46,7 @@ def extract_ktp_data(image_bytes: bytes, api_key: str) -> dict:
 
     # Payload request ke OpenRouter
     payload = {
-        "model": "google/gemini-2.5-flash:free",
+        "model": "meta-llama/llama-3.2-11b-vision-instruct:free",
         "messages": [
             {
                 "role": "user",
