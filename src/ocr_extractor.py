@@ -49,21 +49,23 @@ def extract_ktp_data(image_bytes: bytes, api_key: str) -> dict:
 
   # Menggunakan model Gemini 2.0 Flash Lite (sangat cepat & murah/gratis)
   payload = {
-      "model": "google/gemini-2.0-flash-lite-001",
-      "messages": [{
-          "role": "user",
-          "content": [
-              {"type": "text", "text": prompt},
-              {
-                  "type": "image_url",
-                  "image_url": {
-                      "url": f"data:image/jpeg;base64,{base64_image}"
-                  },
-              },
-          ],
-      }],
-  }
-
+        # Gunakan ID model yang aktif di OpenRouter ini:
+        "model": "google/gemini-2.0-flash-001", 
+        "messages": [
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": prompt},
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:image/jpeg;base64,{base64_image}"
+                        },
+                    },
+                ],
+            }
+        ],
+    }
   response = requests.post(
       "https://openrouter.ai/api/v1/chat/completions",
       headers=headers,
