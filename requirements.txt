@@ -2,4 +2,4 @@ streamlit
 pandas
 requests
 pillow
-openai
+google-genai
