@@ -5,7 +5,8 @@ from google.genai import types
 
 def extract_ktp_data(image_bytes: bytes, api_key: str) -> dict:
     """
-    Extract all fields from Indonesian KTP using Gemini Vision.
+    Extract all fields from an Indonesian KTP using Gemini Vision.
+    Returns a dictionary.
     """
 
     client = genai.Client(api_key=api_key)
@@ -15,7 +16,7 @@ Extract all information from this Indonesian KTP image.
 
 Return ONLY valid JSON.
 
-Schema:
+Use this exact schema:
 
 {
   "province": null,
@@ -39,9 +40,9 @@ Schema:
 
 Rules:
 
-- Do not explain.
-- Do not use markdown.
 - Return JSON only.
+- No markdown.
+- No explanation.
 - NIK must contain digits only.
 - Gender must be Male or Female.
 - Nationality must be Indonesian or Foreigner.
@@ -58,12 +59,15 @@ Rules:
                     mime_type="image/jpeg",
                 ),
             ],
-            config={
-                "response_mime_type": "application/json"
-            },
+            config=types.GenerateContentConfig(
+                temperature=0,
+                response_mime_type="application/json",
+            ),
         )
 
-        return json.loads(response.text)
+        result = json.loads(response.text)
+
+        return result
 
     except Exception as e:
         raise Exception(f"Gemini OCR Error: {e}")
