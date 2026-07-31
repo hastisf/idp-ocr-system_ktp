@@ -83,74 +83,66 @@ st.markdown(
         letter-spacing: 0.5px;
     }
 
-/* ---------------- TAB ---------------- */
+    /* ---------------- TAB ---------------- */
+    button[data-baseweb="tab"] {
+        background: #E2E8F0 !important;
+        border: 1px solid #CBD5E1 !important;
+        border-radius: 8px !important;
+        padding: 8px 14px !important;
+        margin-right: 6px !important;
+        min-width: auto !important;
+    }
 
-button[data-baseweb="tab"]{
-    background:#E2E8F0 !important;
-    border:1px solid #CBD5E1 !important;
-    border-radius:8px !important;
-    padding:8px 14px !important;
-    margin-right:6px !important;
-    min-width:auto !important;
-}
+    button[data-baseweb="tab"] span {
+        color: #0F172A !important;
+        font-weight: 700 !important;
+        font-size: 14px !important;
+    }
 
-button[data-baseweb="tab"] span{
-    color:#0F172A !important;
-    font-weight:700 !important;
-    font-size:14px !important;
-}
+    button[data-baseweb="tab"][aria-selected="true"] {
+        background: #2563EB !important;
+        border-color: #2563EB !important;
+    }
 
-button[data-baseweb="tab"][aria-selected="true"]{
-    background:#2563EB !important;
-    border-color:#2563EB !important;
-}
+    button[data-baseweb="tab"][aria-selected="true"] span {
+        color: white !important;
+    }
 
-button[data-baseweb="tab"][aria-selected="true"] span{
-    color:white !important;
-}
+    /* MOBILE */
+    @media (max-width: 768px) {
+        button[data-baseweb="tab"] {
+            padding: 6px 8px !important;
+            margin-right: 2px !important;
+        }
 
-/* MOBILE */
+        button[data-baseweb="tab"] span {
+            font-size: 11px !important;
+        }
+    }
 
-@media (max-width:768px){
+    /* ---------- FILE UPLOADER ---------- */
+    [data-testid="stFileUploader"] section {
+        border: 2px dashed #CBD5E1 !important;
+        border-radius: 10px !important;
+        background: #FFFFFF !important;
+    }
 
-button[data-baseweb="tab"]{
-    padding:6px 8px !important;
-    margin-right:2px !important;
-}
+    [data-testid="stFileUploader"] section p {
+        color: #1E293B !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+    }
 
-button[data-baseweb="tab"] span{
-    font-size:11px !important;
-}
+    [data-testid="stFileUploader"] section small {
+        display: none !important;
+    }
 
-}
-
-/* ---------- FILE UPLOADER ---------- */
-
-[data-testid="stFileUploader"] section{
-    border:2px dashed #CBD5E1 !important;
-    border-radius:10px !important;
-    background:#FFFFFF !important;
-}
-
-[data-testid="stFileUploader"] section p{
-    color:#1E293B !important;
-    font-size:14px !important;
-    font-weight:600 !important;
-}
-
-[data-testid="stFileUploader"] section small{
-    display:none !important;
-}
-
-/* Mobile */
-
-@media (max-width:768px){
-
-[data-testid="stFileUploader"] section p{
-    font-size:13px !important;
-}
-
-}
+    /* Mobile */
+    @media (max-width: 768px) {
+        [data-testid="stFileUploader"] section p {
+            font-size: 13px !important;
+        }
+    }
 
     /* Styling Tombol Process Document */
     div[data-testid="stVerticalBlock"] div.stButton > button {
@@ -185,16 +177,22 @@ st.markdown(
 tab_verif, tab_history = st.tabs(["Upload & Verification", "Database History"])
 
 with tab_verif:
-
-    # Header
+    # Header Card
     st.markdown(
         """
-        ...
+        <div class="custom-card">
+            <div class="sub-tag">AI Identity Verification</div>
+            <h1 style="font-size: 26px; margin: 6px 0 10px 0; color: #0F172A;">KTPVision <span style="color: #6366F1;">AI</span></h1>
+            <p style="color: #475569; font-size: 14px; line-height: 1.5; margin: 0;">
+                KTPVision AI is an intelligent document verification tool designed to automate Indonesian KTP processing. It instantly detects document validity, extracts key fields via Vision AI, performs data validation, and logs all entries securely.
+            </p>
+            <div class="ai-badge">AI Model: Gemini 3.5 Flash Lite</div>
+        </div>
         """,
         unsafe_allow_html=True,
     )
 
-    # Upload Document
+    # Upload Document Header
     st.markdown(
         """
         <div style="margin-top:15px;margin-bottom:10px;">
@@ -212,7 +210,7 @@ with tab_verif:
     st.markdown(
         """
         <div style="font-weight:600;margin-bottom:8px;">
-        📄 Drop your KTP here or click to browse
+            📄 Drop your KTP here or click to browse
         </div>
         """,
         unsafe_allow_html=True,
@@ -237,167 +235,161 @@ with tab_verif:
         use_container_width=True,
     )
 
-  # Verification Result Section
-  st.subheader("Verification Result")
+    # Verification Result Section
+    st.subheader("Verification Result")
 
-  if process_btn:
-    if not uploaded_file:
-      st.warning("Please upload a document image first.")
-    else:
-      api_key = st.secrets.get("GEMINI_API_KEY")
-      if not api_key:
-        st.error("Missing GEMINI_API_KEY in Streamlit Secrets")
-      else:
-        image_bytes = uploaded_file.getvalue()
-        start_time = time.time()
-
-        with st.spinner("Processing document..."):
-          try:
-            # 1. Classification
-            is_ktp_doc = is_ktp(image_bytes, api_key)
-
-            if not is_ktp_doc:
-              st.error(
-                  "Classification Failed: Uploaded document is NOT an"
-                  " Indonesian KTP."
-              )
+    if process_btn:
+        if not uploaded_file:
+            st.warning("Please upload a document image first.")
+        else:
+            api_key = st.secrets.get("GEMINI_API_KEY")
+            if not api_key:
+                st.error("Missing GEMINI_API_KEY in Streamlit Secrets")
             else:
-              # 2. OCR Extraction
-              ocr_data = extract_ktp_data(image_bytes, api_key)
+                image_bytes = uploaded_file.getvalue()
+                start_time = time.time()
 
-              # 3. Validation
-              nik = ocr_data.get("nik")
-              gender = ocr_data.get("gender")
-              val_status = validate_nik(nik, gender)
+                with st.spinner("Processing document..."):
+                    try:
+                        # 1. Classification
+                        is_ktp_doc = is_ktp(image_bytes, api_key)
 
-              elapsed_time = f"{round(time.time() - start_time, 2)}s"
+                        if not is_ktp_doc:
+                            st.error(
+                                "Classification Failed: Uploaded document is NOT an Indonesian KTP."
+                            )
+                        else:
+                            # 2. OCR Extraction
+                            ocr_data = extract_ktp_data(image_bytes, api_key)
 
-              # 4. Database Storage
-              masked_nik = (
-                  f"{nik[:6]}******{nik[-4:]}"
-                  if nik and len(nik) == 16
-                  else "INVALID"
-              )
-              name = ocr_data.get("name", "N/A")
-              current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                            # 3. Validation
+                            nik = ocr_data.get("nik")
+                            gender = ocr_data.get("gender")
+                            val_status = validate_nik(nik, gender)
 
-              conn = sqlite3.connect("ktp_ocr.db")
-              cursor = conn.cursor()
-              cursor.execute(
-                  """
+                            elapsed_time = f"{round(time.time() - start_time, 2)}s"
+
+                            # 4. Database Storage
+                            masked_nik = (
+                                f"{nik[:6]}******{nik[-4:]}"
+                                if nik and len(nik) == 16
+                                else "INVALID"
+                            )
+                            name = ocr_data.get("name", "N/A")
+                            current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+                            conn = sqlite3.connect("ktp_ocr.db")
+                            cursor = conn.cursor()
+                            cursor.execute(
+                                """
                                 INSERT INTO ktp_logs (waktu_upload, nik_masked, nama, jenis_dokumen, status_validasi, model_ai, raw_json)
                                 VALUES (?, ?, ?, ?, ?, ?, ?)
-                            """,
-                  (
-                      current_time,
-                      masked_nik,
-                      name,
-                      "Indonesian KTP",
-                      val_status,
-                      "Gemini 2.0 Flash",
-                      json.dumps(ocr_data),
-                  ),
-              )
-              db_id = cursor.lastrowid
-              conn.commit()
-              conn.close()
+                                """,
+                                (
+                                    current_time,
+                                    masked_nik,
+                                    name,
+                                    "Indonesian KTP",
+                                    val_status,
+                                    "Gemini 2.0 Flash",
+                                    json.dumps(ocr_data),
+                                ),
+                            )
+                            db_id = cursor.lastrowid
+                            conn.commit()
+                            conn.close()
 
-              # Overall Status Banner
-              st.markdown(
-                  f"""
+                            # Overall Status Banner
+                            st.markdown(
+                                f"""
                                 <div class="custom-card" style="text-align: center; background-color: #EEF2FF; border-color: #C7D2FE;">
                                     <div style="font-size: 16px; font-weight: 700; color: #4338CA;">{val_status}</div>
                                     <div style="font-size: 12px; color: #6366F1; margin-top: 2px;">Overall Validation Status</div>
                                 </div>
-                            """,
-                  unsafe_allow_html=True,
-              )
+                                """,
+                                unsafe_allow_html=True,
+                            )
 
-              # Metric grid
-              col1, col2 = st.columns(2)
-              with col1:
-                st.markdown(
-                    '<div class="info-box"><div'
-                    ' class="info-label">Classification</div><div'
-                    ' class="info-value">Indonesian KTP</div></div>',
-                    unsafe_allow_html=True,
-                )
-                st.markdown(
-                    '<div class="info-box"><div class="info-label">Processing'
-                    f' Time</div><div class="info-value">{elapsed_time}</div></div>',
-                    unsafe_allow_html=True,
-                )
-              with col2:
-                st.markdown(
-                    '<div class="info-box"><div class="info-label">OCR'
-                    ' Status</div><div'
-                    ' class="info-value">Success</div></div>',
-                    unsafe_allow_html=True,
-                )
-                st.markdown(
-                    '<div class="info-box"><div class="info-label">Database'
-                    f' ID</div><div class="info-value">#{db_id}</div></div>',
-                    unsafe_allow_html=True,
-                )
+                            # Metric grid
+                            col1, col2 = st.columns(2)
+                            with col1:
+                                st.markdown(
+                                    '<div class="info-box"><div class="info-label">Classification</div>'
+                                    '<div class="info-value">Indonesian KTP</div></div>',
+                                    unsafe_allow_html=True,
+                                )
+                                st.markdown(
+                                    '<div class="info-box"><div class="info-label">Processing Time</div>'
+                                    f'<div class="info-value">{elapsed_time}</div></div>',
+                                    unsafe_allow_html=True,
+                                )
+                            with col2:
+                                st.markdown(
+                                    '<div class="info-box"><div class="info-label">OCR Status</div>'
+                                    '<div class="info-value">Success</div></div>',
+                                    unsafe_allow_html=True,
+                                )
+                                st.markdown(
+                                    '<div class="info-box"><div class="info-label">Database ID</div>'
+                                    f'<div class="info-value">#{db_id}</div></div>',
+                                    unsafe_allow_html=True,
+                                )
 
-              # Extracted Info list
-              st.subheader("Extracted Information")
+                            # Extracted Info list
+                            st.subheader("Extracted Information")
 
-              fields = [
-                  ("PROVINCE", ocr_data.get("province")),
-                  ("REGENCY / CITY", ocr_data.get("regency_city")),
-                  ("NIK", ocr_data.get("nik")),
-                  ("NAME", ocr_data.get("name")),
-                  ("BIRTH", ocr_data.get("place_and_date_of_birth")),
-                  ("GENDER", ocr_data.get("gender")),
-                  ("ADDRESS", ocr_data.get("address")),
-                  (
-                      "RT / RW",
-                      (
-                          f"{ocr_data.get('rt', '-')}"
-                          f" / {ocr_data.get('rw', '-')}"
-                      ),
-                  ),
-                  ("VILLAGE", ocr_data.get("village_subdistrict")),
-                  ("DISTRICT", ocr_data.get("district")),
-                  ("RELIGION", ocr_data.get("religion")),
-                  ("MARITAL STATUS", ocr_data.get("marital_status")),
-                  ("OCCUPATION", ocr_data.get("occupation")),
-                  ("NATIONALITY", ocr_data.get("nationality")),
-                  ("VALID UNTIL", ocr_data.get("expiry_date")),
-              ]
+                            fields = [
+                                ("PROVINCE", ocr_data.get("province")),
+                                ("REGENCY / CITY", ocr_data.get("regency_city")),
+                                ("NIK", ocr_data.get("nik")),
+                                ("NAME", ocr_data.get("name")),
+                                ("BIRTH", ocr_data.get("place_and_date_of_birth")),
+                                ("GENDER", ocr_data.get("gender")),
+                                ("ADDRESS", ocr_data.get("address")),
+                                (
+                                    "RT / RW",
+                                    f"{ocr_data.get('rt', '-')} / {ocr_data.get('rw', '-')}",
+                                ),
+                                ("VILLAGE", ocr_data.get("village_subdistrict")),
+                                ("DISTRICT", ocr_data.get("district")),
+                                ("RELIGION", ocr_data.get("religion")),
+                                ("MARITAL STATUS", ocr_data.get("marital_status")),
+                                ("OCCUPATION", ocr_data.get("occupation")),
+                                ("NATIONALITY", ocr_data.get("nationality")),
+                                ("VALID UNTIL", ocr_data.get("expiry_date")),
+                            ]
 
-              for label, val in fields:
-                display_val = val if val else "-"
-                st.markdown(
-                    f"""
+                            for label, val in fields:
+                                display_val = val if val else "-"
+                                st.markdown(
+                                    f"""
                                     <div class="info-box">
                                         <div class="info-label">{label}</div>
                                         <div class="info-value">{display_val}</div>
                                     </div>
-                                """,
-                    unsafe_allow_html=True,
-                )
+                                    """,
+                                    unsafe_allow_html=True,
+                                )
 
-          except Exception as e:
-            st.error(f"An error occurred during processing: {e}")
+                    except Exception as e:
+                        st.error(f"An error occurred during processing: {e}")
 
 with tab_history:
-  st.subheader("Processing History")
-  conn = sqlite3.connect("ktp_ocr.db")
-  try:
-    df = pd.read_sql_query(
-        """
+    st.subheader("Processing History")
+    conn = sqlite3.connect("ktp_ocr.db")
+    try:
+        df = pd.read_sql_query(
+            """
             SELECT id AS "ID", waktu_upload AS "Timestamp", nik_masked AS "Masked NIK", 
                    nama AS "Name", status_validasi AS "Validation Status" 
             FROM ktp_logs ORDER BY id DESC
-        """,
-        conn,
-    )
-    conn.close()
-    st.dataframe(df, use_container_width=True, hide_index=True)
-  except Exception as e:
-    st.error(f"Failed to fetch history: {e}")
+            """,
+            conn,
+        )
+        conn.close()
+        st.dataframe(df, use_container_width=True, hide_index=True)
+    except Exception as e:
+        st.error(f"Failed to fetch history: {e}")
 
 # Footer
 st.markdown(
