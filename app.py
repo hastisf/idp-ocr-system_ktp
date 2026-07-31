@@ -116,7 +116,7 @@ with tab_verif:
       """
         <div class="custom-card">
             <div class="sub-tag">AI Identity Verification</div>
-            <h1 style="font-size: 26px; margin: 6px 0 10px 0; color: #0F172A;">VeriKTP <span style="color: #6366F1;">AI</span></h1>
+            <h1 style="font-size: 26px; margin: 6px 0 10px 0; color: #0F172A;">KTPVision AI <span style="color: #6366F1;">AI</span></h1>
             <p style="color: #475569; font-size: 14px; line-height: 1.5; margin: 0;">
                 KTPVision AI is an intelligent document verification tool designed to automate Indonesian KTP processing. It instantly detects document validity, extracts key fields via Vision AI, performs data validation, and logs all entries securely.
             </p>
