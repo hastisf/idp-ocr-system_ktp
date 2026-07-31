@@ -23,7 +23,7 @@ st.markdown(
     .stApp {
     background-color: #0F172A;
     font-family: 'Inter', -apple-system, sans-serif;
-    color: #F8FAFC;
+    color: #F5F7FF;
 }
     
     .brand-title {
@@ -39,12 +39,12 @@ st.markdown(
         padding: 24px;
         margin-bottom: 20px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        border: 1px solid #334155;
+        border: 1px solid #DCE4F5;
     }
     
     .ai-badge {
-        background-color: #312E81;
-        color: #E0E7FF;
+        background-color: #EEF2FF;
+        color: #4F46E5;
         padding: 6px 14px;
         border-radius: 8px;
         font-size: 12px;
@@ -54,7 +54,7 @@ st.markdown(
     }
     
     .info-box {
-        background-color: #162032;
+        background-color: #F8FAFF;
         border-radius: 8px;
         padding: 12px 16px;
         margin-bottom: 8px;
