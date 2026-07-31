@@ -1,14 +1,17 @@
-import io
+import base64
 import json
-from google import genai
-from PIL import Image
+from openai import OpenAI
 
 
 def is_ktp(image_bytes: bytes, api_key: str) -> bool:
   """Classifies whether the uploaded image is an Indonesian KTP or not."""
   try:
-    client = genai.Client(api_key=api_key)
-    image = Image.open(io.BytesIO(image_bytes))
+    client = OpenAI(
+        base_url="https://openrouter.ai/api/v1",
+        api_key=api_key,
+    )
+
+    base64_image = base64.b64encode(image_bytes).decode("utf-8")
 
     prompt = (
         "Analyze this image carefully. Is this image an Indonesian KTP (Kartu"
@@ -18,18 +21,25 @@ def is_ktp(image_bytes: bytes, api_key: str) -> bool:
         " markdown formatting or extra text."
     )
 
-    response = client.models.generate_content(
-        model="gemini-2.5-flash", contents=[image, prompt]
+    response = client.chat.completions.create(
+        model="meta-llama/llama-3.2-11b-vision-instruct:free",
+        messages=[{
+            "role": "user",
+            "content": [
+                {"type": "text", "text": prompt},
+                {
+                    "type": "image_url",
+                    "image_url": {
+                        "url": f"data:image/jpeg;base64,{base64_image}"
+                    },
+                },
+            ],
+        }],
+        response_format={"type": "json_object"},
     )
 
-    content = response.text.strip()
-
-    if content.startswith("```"):
-      content = content.split("```")[1]
-      if content.startswith("json"):
-        content = content[4:]
-
-    result = json.loads(content.strip())
+    content = response.choices[0].message.content.strip()
+    result = json.loads(content)
     return result.get("is_ktp", False)
 
   except Exception as e:
