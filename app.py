@@ -21,29 +21,30 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-color: #F8FAFC;
-        font-family: 'Inter', -apple-system, sans-serif;
-    }
+    background-color: #0F172A;
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: #F8FAFC;
+}
     
     .brand-title {
-        color: #334155;
+        color: #FFFFFF;
         font-weight: 700;
         font-size: 22px;
         margin-bottom: 20px;
     }
     
     .custom-card {
-        background-color: #FFFFFF;
+        background-color: #1E293B;
         border-radius: 12px;
         padding: 24px;
         margin-bottom: 20px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        border: 1px solid #E2E8F0;
+        border: 1px solid #334155;
     }
     
     .ai-badge {
-        background-color: #F1F5F9;
-        color: #475569;
+        background-color: #312E81;
+        color: #E0E7FF;
         padding: 6px 14px;
         border-radius: 8px;
         font-size: 12px;
@@ -53,17 +54,17 @@ st.markdown(
     }
     
     .info-box {
-        background-color: #F8FAFC;
+        background-color: #162032;
         border-radius: 8px;
         padding: 12px 16px;
         margin-bottom: 8px;
-        border: 1px solid #E2E8F0;
+        border: 1px solid #334155;
     }
     
     .info-label {
         font-size: 11px;
         font-weight: 700;
-        color: #64748B;
+        color: #94A3B8;
         text-transform: uppercase;
         letter-spacing: 0.5px;
         margin-bottom: 2px;
@@ -72,7 +73,7 @@ st.markdown(
     .info-value {
         font-size: 14px;
         font-weight: 600;
-        color: #0F172A;
+        color: #F8FAFC;
     }
     
     .sub-tag {
