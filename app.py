@@ -114,6 +114,39 @@ st.markdown(
         display: none !important;
     }
 
+/* ================= TAB STYLE ================= */
+
+button[data-baseweb="tab"]{
+    background-color:#FEE2E2 !important;
+    border:1px solid #FCA5A5 !important;
+    border-radius:10px !important;
+    min-height:44px !important;
+    margin-right:6px !important;
+    transition:all .2s ease;
+}
+
+button[data-baseweb="tab"] p,
+button[data-baseweb="tab"] span{
+    color:#991B1B !important;
+    font-weight:700 !important;
+    font-size:14px !important;
+}
+
+button[data-baseweb="tab"]:hover{
+    background:#FECACA !important;
+}
+
+button[data-baseweb="tab"][aria-selected="true"]{
+    background:#FF4B4B !important;
+    border-color:#FF4B4B !important;
+}
+
+button[data-baseweb="tab"][aria-selected="true"] p,
+button[data-baseweb="tab"][aria-selected="true"] span{
+    color:#FFFFFF !important;
+}
+    
+
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     </style>
