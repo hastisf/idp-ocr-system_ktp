@@ -146,13 +146,25 @@ with tab_verif:
       unsafe_allow_html=True,
   )
 
-  # Upload Document Section
-  st.subheader("Upload Document")
-  uploaded_file = st.file_uploader(
-      "Drop your KTP here or click to browse (PNG, JPG, JPEG)",
-      type=["png", "jpg", "jpeg"],
-      label_visibility="visible",
-  )
+# Upload Document Section (Label di atas kotak agar permanen di HP)
+st.markdown(
+    """
+    <p style="margin-bottom: -15px; font-weight: 600; color: #1E293B; font-size: 14px;">
+        Upload Document
+    </p>
+    <p style="color: #64748B; font-size: 12px; margin-bottom: 15px;">
+        Format: PNG, JPG, JPEG. Max: 200MB.
+    </p>
+""",
+    unsafe_allow_html=True,
+)
+
+# Kotak Uploader (Teks label utamanya di-collapse agar bersih)
+uploaded_file = st.file_uploader(
+    "Drop your KTP here or click to browse",
+    type=["png", "jpg", "jpeg"],
+    label_visibility="collapsed",  # Bersihkan label asli Streamlit
+)
 
   if uploaded_file:
     st.image(
