@@ -150,7 +150,7 @@ with tab_verif:
     if not uploaded_file:
       st.warning("Please upload a document image first.")
     else:
-      api_key = st.secrets.get("OPENROUTER_API_KEY")
+      api_key = st.secrets.get("GEMINI_API_KEY")
       if not api_key:
         st.error("Missing OpenRouter API Key in secrets.toml")
       else:
