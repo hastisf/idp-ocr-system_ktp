@@ -16,9 +16,9 @@ st.set_page_config(page_title="KTPVision AI", layout="centered")
 # Initialize Database
 init_db()
 
-# Custom CSS for clean UI (Pakai raw string biar ga pernah error syntax lagi)
+# Custom CSS for clean UI
 st.markdown(
-    r"""
+    """
     <style>
     .stApp {
         background-color: #F8FAFC;
@@ -91,8 +91,9 @@ st.markdown(
         padding-bottom: 20px;
     }
 
+    /* Styling Tombol Khusus */
     div[data-testid="stVerticalBlock"] div.stButton > button {
-        border: 1px solid #ff4b4b !important;
+        border: 2px solid #FF4B4B !important;
         background-color: #2b1114 !important;
         color: #ffffff !important;
         border-radius: 8px !important;
@@ -113,34 +114,6 @@ st.markdown(
         display: none !important;
     }
 
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    </style>
-""",
-    unsafe_allow_html=True,
-)
-
-/* Styling Tombol Khusus HP / History */
-    div[data-testid="stVerticalBlock"] div.stButton > button {
-        border: 2px solid #FF4B4B !important;
-        background-color: #2b1114 !important;
-        color: #ffffff !important;
-        border-radius: 8px !important;
-        padding: 8px 12px !important;
-        transition: all 0.3s ease !important;
-    }
-
-    /* Tampilan saat tombol ditekan/di-hover */
-    div[data-testid="stVerticalBlock"] div.stButton > button:hover,
-    div[data-testid="stVerticalBlock"] div.stButton > button:focus,
-    div[data-testid="stVerticalBlock"] div.stButton > button:active {
-        background-color: #ff4b4b !important;         /* Background merah terang saat diklik */
-        color: #ffffff !important;
-        border-color: #ff4b4b !important;
-        box-shadow: 0 0 8px rgba(255, 75, 75, 0.5) !important;
-    }
-    
-    /* Hide Streamlit default components */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     </style>
@@ -174,8 +147,8 @@ with tab_verif:
   st.markdown(
       """
         <div style="margin-top: 15px; margin-bottom: 10px;">
-        <div style="font-weight: 700; color: #1E293B; font-size: 15px;">Upload Document</div>
-        <div style="color: #64748B; font-size: 12px; margin-top: 2px;">Format: PNG, JPG, JPEG. Max: 200MB.</div>
+            <div style="font-weight: 700; color: #1E293B; font-size: 15px;">Upload Document</div>
+            <div style="color: #64748B; font-size: 12px; margin-top: 2px;">Format: PNG, JPG, JPEG. Max: 200MB.</div>
         </div>
     """,
       unsafe_allow_html=True,
