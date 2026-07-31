@@ -44,22 +44,25 @@ def extract_ktp_data(image_bytes: bytes, api_key: str) -> dict:
     4. Standardize nationality values to 'Indonesian' or 'Foreigner'.
     """
 
-  response = client.chat.completions.create(
-      model="qwen/qwen2.5-vl-72b-instruct:free",
-      messages=[{
-          "role": "user",
-          "content": [
-              {"type": "text", "text": prompt},
-              {
-                  "type": "image_url",
-                  "image_url": {
-                      "url": f"data:image/jpeg;base64,{base64_image}"
-                  },
-              },
-          ],
-      }],
-      response_format={"type": "json_object"},
-  )
+try:
+    response = client.chat.completions.create(
+        model="qwen/qwen2.5-vl-72b-instruct:free",
+        messages=[{
+            "role": "user",
+            "content": [
+                {"type": "text", "text": prompt},
+                {
+                    "type": "image_url",
+                    "image_url": {
+                        "url": f"data:image/jpeg;base64,{base64_image}"
+                    },
+                },
+            ],
+        }],
+        response_format={"type": "json_object"},
+    )
+except Exception as e:
+    raise Exception(f"OpenRouter Error: {e}")
 
   content = response.choices[0].message.content.strip()
   return json.loads(content)
