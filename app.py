@@ -11,7 +11,7 @@ from src.ocr_extractor import extract_ktp_data
 from src.validator import validate_nik
 
 # Configuration
-st.set_page_config(page_title="VeriKTP AI", layout="centered")
+st.set_page_config(page_title="KTPVision AI", layout="centered")
 
 # Initialize Database
 init_db()
@@ -106,7 +106,7 @@ st.markdown(
 
 # Navigation
 st.markdown(
-    '<div class="brand-title">VeriKTP AI</div>', unsafe_allow_html=True
+    '<div class="brand-title">KTPVision AI</div>', unsafe_allow_html=True
 )
 tab_verif, tab_history = st.tabs(["Upload & Verification", "Database History"])
 
@@ -118,9 +118,7 @@ with tab_verif:
             <div class="sub-tag">AI Identity Verification</div>
             <h1 style="font-size: 26px; margin: 6px 0 10px 0; color: #0F172A;">VeriKTP <span style="color: #6366F1;">AI</span></h1>
             <p style="color: #475569; font-size: 14px; line-height: 1.5; margin: 0;">
-                VeriKTP AI is an AI-powered application for Indonesian Identity Card verification. 
-                The system classifies uploaded documents, extracts information using AI-based OCR, 
-                validates extracted data, and stores verification results in a database.
+                KTPVision AI is an intelligent document verification tool designed to automate Indonesian KTP processing. It instantly detects document validity, extracts key fields via Vision AI, performs data validation, and logs all entries securely.
             </p>
             <div class="ai-badge">AI Model: Gemini 3.5 Flash Lite</div>
         </div>
