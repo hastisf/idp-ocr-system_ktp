@@ -122,7 +122,7 @@ with tab_verif:
                 The system classifies uploaded documents, extracts information using AI-based OCR, 
                 validates extracted data, and stores verification results in a database.
             </p>
-            <div class="ai-badge">AI Model: Llama 3.2 11B Vision</div>
+            <div class="ai-badge">AI Model: Gemini 2.0 Flash</div>
         </div>
     """,
       unsafe_allow_html=True,
@@ -152,9 +152,9 @@ with tab_verif:
     if not uploaded_file:
       st.warning("Please upload a document image first.")
     else:
-      api_key = st.secrets.get("OPENROUTER_API_KEY")
+      api_key = st.secrets.get("GEMINI_API_KEY")
       if not api_key:
-        st.error("Missing OPENROUTER_API_KEY in Streamlit Secrets")
+        st.error("Missing GEMINI_API_KEY in Streamlit Secrets")
       else:
         image_bytes = uploaded_file.getvalue()
         start_time = time.time()
@@ -202,7 +202,7 @@ with tab_verif:
                       name,
                       "Indonesian KTP",
                       val_status,
-                      "Llama-3.2-11b-Vision",
+                      "Gemini 2.0 Flash",
                       json.dumps(ocr_data),
                   ),
               )
