@@ -112,9 +112,17 @@ st.markdown(
         color: #FFFFFF !important;
     }
 
-    /* SEMBUNYIKAN TEKS BAWAAN STREAMLIT (200MB per file • PNG, JPG) */
-    [data-testid="stFileUploaderInstructions"] {
+    /* KHUSUS NYEMBUNYIIN HANYA TEKS "200MB PER FILE" TANPA HILANGIN TEKS INTRUKSI */
+    div[data-testid="stFileUploaderInstructions"] small,
+    div[data-testid="stFileUploaderDropzoneInstructions"] small {
         display: none !important;
+    }
+
+    /* Pastikan Teks 'Drop your KTP here or click to browse' tetep tebal dan kelihatan jelas */
+    div[data-testid="stFileUploaderInstructions"] span,
+    div[data-testid="stFileUploaderDropzoneInstructions"] span {
+        color: #1E293B !important;
+        font-weight: 600 !important;
     }
 
     /* Styling Tombol Process Document */
@@ -318,7 +326,7 @@ with tab_verif:
                   ("MARITAL STATUS", ocr_data.get("marital_status")),
                   ("OCCUPATION", ocr_data.get("occupation")),
                   ("NATIONALITY", ocr_data.get("nationality")),
-                  ("VALID UNTIL", ocr_data.get("expiry_date")),
+                  ("VALID UNTIL", ocr_date.get("expiry_date")),
               ]
 
               for label, val in fields:
