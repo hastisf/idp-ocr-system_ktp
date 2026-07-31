@@ -1,15 +1,16 @@
-import io
+import base64
 import json
-from google import genai
-from PIL import Image
+from openai import OpenAI
 
 
 def extract_ktp_data(image_bytes: bytes, api_key: str) -> dict:
-  """Extracts KTP fields using official new Google GenAI SDK."""
-  # Client SDK baru dari Google
-  client = genai.Client(api_key=api_key)
+  """Extracts KTP fields using OpenRouter API."""
+  client = OpenAI(
+      base_url="https://openrouter.ai/api/v1",
+      api_key=api_key,
+  )
 
-  image = Image.open(io.BytesIO(image_bytes))
+  base64_image = base64.b64encode(image_bytes).decode("utf-8")
 
   prompt = """
     Extract all information from this Indonesian KTP image and return it strictly as a valid JSON object.
@@ -43,16 +44,22 @@ def extract_ktp_data(image_bytes: bytes, api_key: str) -> dict:
     4. Standardize nationality values to 'Indonesian' or 'Foreigner'.
     """
 
-  # Metode baru: client.models.generate_content
-  response = client.models.generate_content(
-      model="gemini-2.5-flash", contents=[image, prompt]
+  response = client.chat.completions.create(
+      model="meta-llama/llama-3.2-11b-vision-instruct:free",
+      messages=[{
+          "role": "user",
+          "content": [
+              {"type": "text", "text": prompt},
+              {
+                  "type": "image_url",
+                  "image_url": {
+                      "url": f"data:image/jpeg;base64,{base64_image}"
+                  },
+              },
+          ],
+      }],
+      response_format={"type": "json_object"},
   )
 
-  content = response.text.strip()
-
-  if content.startswith("```"):
-    content = content.split("```")[1]
-    if content.startswith("json"):
-      content = content[4:]
-
-  return json.loads(content.strip())
+  content = response.choices[0].message.content.strip()
+  return json.loads(content)
