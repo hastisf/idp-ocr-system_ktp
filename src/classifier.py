@@ -23,21 +23,23 @@ def is_ktp(image_bytes: bytes, api_key: str) -> bool:
   )
 
   payload = {
-      "model": "google/gemini-2.0-flash-lite-001",
-      "messages": [{
-          "role": "user",
-          "content": [
-              {"type": "text", "text": prompt},
-              {
-                  "type": "image_url",
-                  "image_url": {
-                      "url": f"data:image/jpeg;base64,{base64_image}"
-                  },
-              },
-          ],
-      }],
-  }
-
+        "model": "google/gemini-2.0-flash-001",
+        "messages": [
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": prompt},
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:image/jpeg;base64,{base64_image}"
+                        },
+                    },
+                ],
+            }
+        ],
+    }
+  
   try:
     response = requests.post(
         "https://openrouter.ai/api/v1/chat/completions",
