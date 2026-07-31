@@ -149,9 +149,9 @@ with tab_verif:
   # Upload Document Section
   st.subheader("Upload Document")
   uploaded_file = st.file_uploader(
-      "Drop your KTP here or click to browse",
+      "Drop your KTP here or click to browse (PNG, JPG, JPEG)",
       type=["png", "jpg", "jpeg"],
-      label_visibility="collapsed",
+      label_visibility="visible",
   )
 
   if uploaded_file:
