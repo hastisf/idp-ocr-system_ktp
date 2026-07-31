@@ -16,7 +16,7 @@ st.set_page_config(page_title="KTPVision AI", layout="centered")
 # Initialize Database
 init_db()
 
-# Custom CSS for clean UI (No emojis/logos)
+# Custom CSS for clean UI
 st.markdown(
     """
     <style>
@@ -96,6 +96,26 @@ st.markdown(
         padding-bottom: 20px;
     }
 
+/* --- STYLING TOMBOL KHUSUS HP / HISTORY --- */
+    div[data-testid="stVerticalBlock"] div.stButton > button {
+        border: 1px solid #ff4b4b !important;          /* Border merah terang */
+        background-color: #2b1114 !important;         /* Background merah soft gelap */
+        color: #ffffff !important;                     /* Teks putih jelas */
+        border-radius: 8px !important;                 /* Corner halus */
+        padding: 8px 12px !important;
+        transition: all 0.3s ease !important;
+    }
+
+    /* Tampilan saat tombol ditekan/di-hover */
+    div[data-testid="stVerticalBlock"] div.stButton > button:hover,
+    div[data-testid="stVerticalBlock"] div.stButton > button:focus,
+    div[data-testid="stVerticalBlock"] div.stButton > button:active {
+        background-color: #ff4b4b !important;         /* Background merah terang saat diklik */
+        color: #ffffff !important;
+        border-color: #ff4b4b !important;
+        box-shadow: 0 0 8px rgba(255, 75, 75, 0.5) !important;
+    }
+    
     /* Hide Streamlit default components */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
@@ -116,7 +136,7 @@ with tab_verif:
       """
         <div class="custom-card">
             <div class="sub-tag">AI Identity Verification</div>
-            <h1 style="font-size: 26px; margin: 6px 0 10px 0; color: #0F172A;">KTPVision AI <span style="color: #6366F1;">AI</span></h1>
+            <h1 style="font-size: 26px; margin: 6px 0 10px 0; color: #0F172A;">KTPVision <span style="color: #6366F1;">AI</span></h1>
             <p style="color: #475569; font-size: 14px; line-height: 1.5; margin: 0;">
                 KTPVision AI is an intelligent document verification tool designed to automate Indonesian KTP processing. It instantly detects document validity, extracts key fields via Vision AI, performs data validation, and logs all entries securely.
             </p>
