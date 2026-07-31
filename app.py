@@ -83,47 +83,74 @@ st.markdown(
         letter-spacing: 0.5px;
     }
 
-    /* TAB NAVIGATION: BIKIN TEKS & BACKGROUND TAB UTAMA & HISTORY SUPER CLEAR */
-    button[data-baseweb="tab"] {
-        background-color: #E2E8F0 !important;
-        border-radius: 8px !important;
-        padding: 8px 16px !important;
-        margin-right: 8px !important;
-        border: 1px solid #CBD5E1 !important;
-    }
+/* ---------------- TAB ---------------- */
 
-    button[data-baseweb="tab"] *, 
-    button[data-baseweb="tab"] p, 
-    button[data-baseweb="tab"] span {
-        color: #0F172A !important;
-        font-weight: 700 !important;
-        font-size: 14px !important;
-        opacity: 1 !important;
-    }
+button[data-baseweb="tab"]{
+    background:#E2E8F0 !important;
+    border:1px solid #CBD5E1 !important;
+    border-radius:8px !important;
+    padding:8px 14px !important;
+    margin-right:6px !important;
+    min-width:auto !important;
+}
 
-    button[data-baseweb="tab"][aria-selected="true"] {
-        background-color: #2563EB !important;
-        border-color: #2563EB !important;
-    }
+button[data-baseweb="tab"] span{
+    color:#0F172A !important;
+    font-weight:700 !important;
+    font-size:14px !important;
+}
 
-    button[data-baseweb="tab"][aria-selected="true"] *,
-    button[data-baseweb="tab"][aria-selected="true"] p,
-    button[data-baseweb="tab"][aria-selected="true"] span {
-        color: #FFFFFF !important;
-    }
+button[data-baseweb="tab"][aria-selected="true"]{
+    background:#2563EB !important;
+    border-color:#2563EB !important;
+}
 
-    /* KHUSUS NYEMBUNYIIN HANYA TEKS "200MB PER FILE" TANPA HILANGIN TEKS INTRUKSI */
-    div[data-testid="stFileUploaderInstructions"] small,
-    div[data-testid="stFileUploaderDropzoneInstructions"] small {
-        display: none !important;
-    }
+button[data-baseweb="tab"][aria-selected="true"] span{
+    color:white !important;
+}
 
-    /* Pastikan Teks 'Drop your KTP here or click to browse' tetep tebal dan kelihatan jelas */
-    div[data-testid="stFileUploaderInstructions"] span,
-    div[data-testid="stFileUploaderDropzoneInstructions"] span {
-        color: #1E293B !important;
-        font-weight: 600 !important;
-    }
+/* MOBILE */
+
+@media (max-width:768px){
+
+button[data-baseweb="tab"]{
+    padding:6px 8px !important;
+    margin-right:2px !important;
+}
+
+button[data-baseweb="tab"] span{
+    font-size:11px !important;
+}
+
+}
+
+/* ---------- FILE UPLOADER ---------- */
+
+[data-testid="stFileUploader"] section{
+    border:2px dashed #CBD5E1 !important;
+    border-radius:10px !important;
+    background:#FFFFFF !important;
+}
+
+[data-testid="stFileUploader"] section p{
+    color:#1E293B !important;
+    font-size:14px !important;
+    font-weight:600 !important;
+}
+
+[data-testid="stFileUploader"] section small{
+    display:none !important;
+}
+
+/* Mobile */
+
+@media (max-width:768px){
+
+[data-testid="stFileUploader"] section p{
+    font-size:13px !important;
+}
+
+}
 
     /* Styling Tombol Process Document */
     div[data-testid="stVerticalBlock"] div.stButton > button {
@@ -158,46 +185,57 @@ st.markdown(
 tab_verif, tab_history = st.tabs(["Upload & Verification", "Database History"])
 
 with tab_verif:
-  # Header Card
-  st.markdown(
-      """
-        <div class="custom-card">
-            <div class="sub-tag">AI Identity Verification</div>
-            <h1 style="font-size: 26px; margin: 6px 0 10px 0; color: #0F172A;">KTPVision <span style="color: #6366F1;">AI</span></h1>
-            <p style="color: #475569; font-size: 14px; line-height: 1.5; margin: 0;">
-                KTPVision AI is an intelligent document verification tool designed to automate Indonesian KTP processing. It instantly detects document validity, extracts key fields via Vision AI, performs data validation, and logs all entries securely.
-            </p>
-            <div class="ai-badge">AI Model: Gemini 3.5 Flash Lite</div>
-        </div>
-    """,
-      unsafe_allow_html=True,
-  )
 
-  # Upload Document Section
-  st.markdown(
-      """
-        <div style="margin-top: 15px; margin-bottom: 10px;">
-            <div style="font-weight: 700; color: #1E293B; font-size: 15px;">Upload Document</div>
-            <div style="color: #64748B; font-size: 12px; margin-top: 2px;">Format: PNG, JPG, JPEG. Max: 200MB.</div>
-        </div>
-    """,
-      unsafe_allow_html=True,
-  )
-
-  uploaded_file = st.file_uploader(
-      "Drop your KTP here or click to browse",
-      type=["png", "jpg", "jpeg"],
-      label_visibility="visible",
-  )
-
-  if uploaded_file:
-    st.image(
-        uploaded_file, caption="Selected Document", use_container_width=True
+    # Header
+    st.markdown(
+        """
+        ...
+        """,
+        unsafe_allow_html=True,
     )
 
-  process_btn = st.button(
-      "Process Document", type="primary", use_container_width=True
-  )
+    # Upload Document
+    st.markdown(
+        """
+        <div style="margin-top:15px;margin-bottom:10px;">
+            <div style="font-weight:700;font-size:15px;">
+                Upload Document
+            </div>
+            <div style="font-size:12px;color:#64748B;">
+                Format: PNG, JPG, JPEG. Max: 200MB.
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        """
+        <div style="font-weight:600;margin-bottom:8px;">
+        📄 Drop your KTP here or click to browse
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    uploaded_file = st.file_uploader(
+        "",
+        type=["png", "jpg", "jpeg"],
+        label_visibility="visible",
+    )
+
+    if uploaded_file:
+        st.image(
+            uploaded_file,
+            caption="Selected Document",
+            use_container_width=True,
+        )
+
+    process_btn = st.button(
+        "Process Document",
+        type="primary",
+        use_container_width=True,
+    )
 
   # Verification Result Section
   st.subheader("Verification Result")
@@ -326,7 +364,7 @@ with tab_verif:
                   ("MARITAL STATUS", ocr_data.get("marital_status")),
                   ("OCCUPATION", ocr_data.get("occupation")),
                   ("NATIONALITY", ocr_data.get("nationality")),
-                  ("VALID UNTIL", ocr_date.get("expiry_date")),
+                  ("VALID UNTIL", ocr_data.get("expiry_date")),
               ]
 
               for label, val in fields:
