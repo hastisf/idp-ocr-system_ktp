@@ -1,39 +1,69 @@
-import requests
 import base64
 import json
+import requests
 
-def encode_image(image_bytes):
-    return base64.b64encode(image_bytes).decode('utf-8')
 
-def classify_ktp(image_bytes, api_key):
-    # Membersihkan API Key dari spasi dan karakter non-ASCII
-    clean_api_key = str(api_key).strip().encode('ascii', 'ignore').decode('ascii')
-    base64_img = encode_image(image_bytes)
-    
-    headers = {
-        "Authorization": f"Bearer {clean_api_key}",
-        "Content-Type": "application/json"
-    }
-    
-    prompt = """
-    Analyze this image carefully. Is this an Indonesian National Identity Card (KTP Indonesia)?
-    Respond strictly in JSON with a single key 'is_ktp' which is true or false.
-    Example: {"is_ktp": true}
-    """
-    
-    payload = {
-        "model": "google/gemini-2.0-flash-exp:free",
-        "messages": [
-            {
-                "role": "user",
-                "content": [
-                    {"type": "text", "text": prompt},
-                    {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_img}"}}
-                ]
-            }
-        ],
-        "response_format": {"type": "json_object"}
-    }
-    
-    response = requests.post("https://openrouter.ai/api/v1/chat/completions", headers=headers, json=payload)
-    return json.loads(response.json()['choices'][0]['message']['content'])
+def is_ktp(image_bytes: bytes, api_key: str) -> bool:
+  """Classifies whether the uploaded image is an Indonesian KTP or not."""
+  headers = {
+      "Authorization": f"Bearer {api_key}",
+      "Content-Type": "application/json",
+      "HTTP-Referer": "https://streamlit.io",
+      "X-Title": "IDP KTP App",
+  }
+
+  base64_image = base64.b64encode(image_bytes).decode("utf-8")
+
+  prompt = (
+      "Analyze this image carefully. Is this image an Indonesian KTP (Kartu"
+      " Tanda Penduduk) or a photo/scan of an Indonesian KTP? Respond with"
+      ' ONLY a JSON object: {"is_ktp": true, "reason": "short explanation"}'
+      ' or {"is_ktp": false, "reason": "short explanation"}. Do NOT include'
+      " markdown formatting or extra text."
+  )
+
+  payload = {
+      "model": "google/gemini-2.0-flash-lite-001",
+      "messages": [{
+          "role": "user",
+          "content": [
+              {"type": "text", "text": prompt},
+              {
+                  "type": "image_url",
+                  "image_url": {
+                      "url": f"data:image/jpeg;base64,{base64_image}"
+                  },
+              },
+          ],
+      }],
+  }
+
+  try:
+    response = requests.post(
+        "https://openrouter.ai/api/v1/chat/completions",
+        headers=headers,
+        json=payload,
+    )
+    res_json = response.json()
+
+    if "error" in res_json:
+      print(f"Classifier API Error: {res_json['error']}")
+      return True  # Fallback: izinkan proses jika classifier error
+
+    if "choices" not in res_json or not res_json["choices"]:
+      print(f"Classifier invalid response: {res_json}")
+      return True  # Fallback
+
+    content = res_json["choices"][0]["message"]["content"].strip()
+
+    if content.startswith("```"):
+      content = content.split("```")[1]
+      if content.startswith("json"):
+        content = content[4:]
+
+    result = json.loads(content.strip())
+    return result.get("is_ktp", False)
+
+  except Exception as e:
+    print(f"Classifier exception: {e}")
+    return True  # Fallback aman agar aplikasi tidak crash
