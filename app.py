@@ -96,6 +96,19 @@ st.markdown(
         padding-bottom: 20px;
     }
 
+    /* Sembunyikan teks petunjuk bawaan di dalam kotak uploader */
+    [data-testid="stFileUploaderDropzoneInstructions"] {
+        display: none !important;
+    }
+
+    /* Hide Streamlit default components */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    </style>
+""",
+    unsafe_allow_html=True,
+)
+
 /* --- STYLING TOMBOL KHUSUS HP / HISTORY --- */
     div[data-testid="stVerticalBlock"] div.stButton > button {
         border: 1px solid #ff4b4b !important;          /* Border merah terang */
@@ -140,7 +153,7 @@ with tab_verif:
             <p style="color: #475569; font-size: 14px; line-height: 1.5; margin: 0;">
                 KTPVision AI is an intelligent document verification tool designed to automate Indonesian KTP processing. It instantly detects document validity, extracts key fields via Vision AI, performs data validation, and logs all entries securely.
             </p>
-            <div class="ai-badge">AI Model: Gemini 2.0 Flash</div>
+            <div class="ai-badge">AI Model: Gemini 3.5 Flash Lite</div>
         </div>
     """,
       unsafe_allow_html=True,
