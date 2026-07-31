@@ -83,7 +83,7 @@ st.markdown(
         letter-spacing: 0.5px;
     }
 
-    /* FIX TAB DATABASE HISTORY & UPLOAD (Bikin Semua Teks Tab Sangat Jelas) */
+    /* TAB NAVIGATION: BIKIN TEKS & BACKGROUND TAB UTAMA & HISTORY SUPER CLEAR */
     button[data-baseweb="tab"] {
         background-color: #E2E8F0 !important;
         border-radius: 8px !important;
@@ -92,7 +92,6 @@ st.markdown(
         border: 1px solid #CBD5E1 !important;
     }
 
-    /* Paksa semua teks di dalam tombol tab berwarna hitam gelap & tebal */
     button[data-baseweb="tab"] *, 
     button[data-baseweb="tab"] p, 
     button[data-baseweb="tab"] span {
@@ -102,7 +101,6 @@ st.markdown(
         opacity: 1 !important;
     }
 
-    /* Tab yang sedang aktif */
     button[data-baseweb="tab"][aria-selected="true"] {
         background-color: #2563EB !important;
         border-color: #2563EB !important;
@@ -114,12 +112,9 @@ st.markdown(
         color: #FFFFFF !important;
     }
 
-    /* BIKIN TEKS LIMIT FILE UPLOADER TEBAL & GELAP */
-    div[data-testid="stFileUploader"] small, 
-    div[data-testid="stFileUploader"] span, 
-    div[data-testid="stFileUploader"] p {
-        color: #334155 !important;
-        font-weight: 600 !important;
+    /* SEMBUNYIKAN TEKS BAWAAN STREAMLIT (200MB per file • PNG, JPG) */
+    [data-testid="stFileUploaderInstructions"] {
+        display: none !important;
     }
 
     /* Styling Tombol Process Document */
