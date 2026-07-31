@@ -152,7 +152,7 @@ with tab_verif:
     else:
       api_key = st.secrets.get("GEMINI_API_KEY")
       if not api_key:
-        st.error("Missing OpenRouter API Key in secrets.toml")
+        st.error("Missing GEMINI_API_KEY in Streamlit Secrets")
       else:
         image_bytes = uploaded_file.getvalue()
         start_time = time.time()
@@ -200,7 +200,7 @@ with tab_verif:
                       name,
                       "Indonesian KTP",
                       val_status,
-                      "Llama-3.2-11b-Vision",
+                      "Gemini 1.5 Flash",
                       json.dumps(ocr_data),
                   ),
               )
