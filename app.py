@@ -149,12 +149,10 @@ with tab_verif:
   # Upload Document Section
   st.markdown(
       """
-        <p style="margin-bottom: -15px; font-weight: 600; color: #1E293B; font-size: 14px;">
-            Upload Document
-        </p>
-        <p style="color: #64748B; font-size: 12px; margin-bottom: 15px;">
-            Format: PNG, JPG, JPEG. Max: 200MB.
-        </p>
+        <div style="margin-top: 15px; margin-bottom: 10px;">
+        <div style="font-weight: 700; color: #1E293B; font-size: 15px;">Upload Document</div>
+        <div style="color: #64748B; font-size: 12px; margin-top: 2px;">Format: PNG, JPG, JPEG. Max: 200MB.</div>
+        </div>
     """,
       unsafe_allow_html=True,
   )
