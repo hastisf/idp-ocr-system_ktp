@@ -61,23 +61,24 @@ def extract_ktp_data(image_bytes: bytes, api_key: str) -> dict:
       }],
   }
 
-  response = requests.post(
-      "https://openrouter.ai/api/v1/chat/completions",
-      headers=headers,
-      json=payload,
+response = requests.post(
+    "https://openrouter.ai/api/v1/chat/completions",
+    headers=headers,
+    json=payload,
+)
+res_json = response.json()
+
+# Pengecekan error
+if "error" in res_json:
+  error_msg = res_json["error"].get("message", "Unknown API error")
+  raise Exception(f"OpenRouter API Error: {error_msg}")
+
+if "choices" not in res_json or not res_json["choices"]:
+  raise Exception(
+      f"Gagal memproses gambar. Respon OpenRouter: {json.dumps(res_json)}"
   )
-  res_json = response.json()
 
-  if "error" in res_json:
-    error_msg = res_json["error"].get("message", "Unknown API error")
-    raise Exception(f"OpenRouter API Error: {error_msg}")
-
-  if "choices" not in res_json or not res_json["choices"]:
-    raise Exception(
-        f"Unexpected response from OpenRouter: {json.dumps(res_json)}"
-    )
-
-  content = res_json["choices"][0]["message"]["content"].strip()
+content = res_json["choices"][0]["message"]["content"].strip()
 
   # Cleaning markdown formatting
   if content.startswith("```"):
