@@ -16,17 +16,15 @@ st.set_page_config(page_title="KTPVision AI", layout="centered")
 # Initialize Database
 init_db()
 
-# Custom CSS for clean UI
+# Custom CSS for clean UI (Pakai raw string biar ga pernah error syntax lagi)
 st.markdown(
-    """
+    r"""
     <style>
-    /* Background */
     .stApp {
         background-color: #F8FAFC;
         font-family: 'Inter', -apple-system, sans-serif;
     }
     
-    /* Top Brand Title */
     .brand-title {
         color: #334155;
         font-weight: 700;
@@ -34,7 +32,6 @@ st.markdown(
         margin-bottom: 20px;
     }
     
-    /* Card Style */
     .custom-card {
         background-color: #FFFFFF;
         border-radius: 12px;
@@ -44,7 +41,6 @@ st.markdown(
         border: 1px solid #E2E8F0;
     }
     
-    /* Text Badge */
     .ai-badge {
         background-color: #F1F5F9;
         color: #475569;
@@ -56,7 +52,6 @@ st.markdown(
         margin-top: 12px;
     }
     
-    /* Field Result Card */
     .info-box {
         background-color: #F8FAFC;
         border-radius: 8px;
@@ -64,6 +59,7 @@ st.markdown(
         margin-bottom: 8px;
         border: 1px solid #E2E8F0;
     }
+    
     .info-label {
         font-size: 11px;
         font-weight: 700;
@@ -72,13 +68,13 @@ st.markdown(
         letter-spacing: 0.5px;
         margin-bottom: 2px;
     }
+    
     .info-value {
         font-size: 14px;
         font-weight: 600;
         color: #0F172A;
     }
     
-    /* Subtitle Tag */
     .sub-tag {
         color: #6366F1;
         font-size: 12px;
@@ -87,7 +83,6 @@ st.markdown(
         letter-spacing: 0.5px;
     }
 
-    /* Footer */
     .footer-text {
         text-align: center;
         color: #94A3B8;
@@ -96,12 +91,28 @@ st.markdown(
         padding-bottom: 20px;
     }
 
-    /* Sembunyikan teks petunjuk bawaan di dalam kotak uploader */
+    div[data-testid="stVerticalBlock"] div.stButton > button {
+        border: 1px solid #ff4b4b !important;
+        background-color: #2b1114 !important;
+        color: #ffffff !important;
+        border-radius: 8px !important;
+        padding: 8px 12px !important;
+        transition: all 0.3s ease !important;
+    }
+
+    div[data-testid="stVerticalBlock"] div.stButton > button:hover,
+    div[data-testid="stVerticalBlock"] div.stButton > button:focus,
+    div[data-testid="stVerticalBlock"] div.stButton > button:active {
+        background-color: #ff4b4b !important;
+        color: #ffffff !important;
+        border-color: #ff4b4b !important;
+        box-shadow: 0 0 8px rgba(255, 75, 75, 0.5) !important;
+    }
+
     [data-testid="stFileUploaderDropzoneInstructions"] {
         display: none !important;
     }
 
-    /* Hide Streamlit default components */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     </style>
