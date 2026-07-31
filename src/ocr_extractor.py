@@ -1,15 +1,13 @@
 import io
 import json
-import google.generativeai as genai
+from google import genai
 from PIL import Image
 
 
 def extract_ktp_data(image_bytes: bytes, api_key: str) -> dict:
-  """Extracts KTP fields using Google Gemini 1.5 Flash."""
-  genai.configure(api_key=api_key)
-
-  # Gunakan prefix 'models/' agar tidak bentrok dengan v1beta API
-  model = genai.GenerativeModel("gemini-1.5-flash-latest")
+  """Extracts KTP fields using official new Google GenAI SDK."""
+  # Client SDK baru dari Google
+  client = genai.Client(api_key=api_key)
 
   image = Image.open(io.BytesIO(image_bytes))
 
@@ -45,7 +43,11 @@ def extract_ktp_data(image_bytes: bytes, api_key: str) -> dict:
     4. Standardize nationality values to 'Indonesian' or 'Foreigner'.
     """
 
-  response = model.generate_content([prompt, image])
+  # Metode baru: client.models.generate_content
+  response = client.models.generate_content(
+      model="gemini-2.5-flash", contents=[image, prompt]
+  )
+
   content = response.text.strip()
 
   if content.startswith("```"):
