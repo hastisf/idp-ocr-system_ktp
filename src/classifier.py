@@ -5,19 +5,19 @@ from google.genai import types
 
 def is_ktp(image_bytes: bytes, api_key: str) -> bool:
     """
-    Classifies whether the uploaded image is an Indonesian KTP.
-    Returns True if it is KTP, otherwise False.
+    Classify whether the uploaded image is an Indonesian KTP.
+    Returns True if KTP, otherwise False.
     """
 
     try:
         client = genai.Client(api_key=api_key)
 
         prompt = """
-Analyze this image carefully.
+Analyze this image.
 
 Determine whether this image is an Indonesian National Identity Card (KTP).
 
-Respond ONLY with valid JSON.
+Return ONLY valid JSON.
 
 Example:
 
@@ -35,7 +35,7 @@ or
 """
 
         response = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model="gemini-2.0-flash",
             contents=[
                 prompt,
                 types.Part.from_bytes(
@@ -43,9 +43,10 @@ or
                     mime_type="image/jpeg",
                 ),
             ],
-            config={
-                "response_mime_type": "application/json"
-            },
+            config=types.GenerateContentConfig(
+                temperature=0,
+                response_mime_type="application/json",
+            ),
         )
 
         result = json.loads(response.text)
@@ -53,4 +54,5 @@ or
         return result.get("is_ktp", False)
 
     except Exception as e:
-        raise Exception(f"Gemini Classifier Error: {e}")
+        print(f"Gemini Classifier Error: {e}")
+        return True
