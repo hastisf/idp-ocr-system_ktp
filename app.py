@@ -122,7 +122,7 @@ with tab_verif:
                 The system classifies uploaded documents, extracts information using AI-based OCR, 
                 validates extracted data, and stores verification results in a database.
             </p>
-            <div class="ai-badge">AI Model: Gemini 2.0 Flash</div>
+            <div class="ai-badge">AI Model: Gemini 3.5 Flash Lite</div>
         </div>
     """,
       unsafe_allow_html=True,
