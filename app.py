@@ -105,7 +105,9 @@ st.markdown(
 )
 
 # Navigation
-st.markdown('<div class="brand-title">VeriKTP AI</div>', unsafe_allow_html=True)
+st.markdown(
+    '<div class="brand-title">VeriKTP AI</div>', unsafe_allow_html=True
+)
 tab_verif, tab_history = st.tabs(["Upload & Verification", "Database History"])
 
 with tab_verif:
@@ -120,7 +122,7 @@ with tab_verif:
                 The system classifies uploaded documents, extracts information using AI-based OCR, 
                 validates extracted data, and stores verification results in a database.
             </p>
-            <div class="ai-badge">AI Model: Google Gemini 1.5 Flash</div>
+            <div class="ai-badge">AI Model: Llama 3.2 11B Vision</div>
         </div>
     """,
       unsafe_allow_html=True,
@@ -150,9 +152,9 @@ with tab_verif:
     if not uploaded_file:
       st.warning("Please upload a document image first.")
     else:
-      api_key = st.secrets.get("GEMINI_API_KEY")
+      api_key = st.secrets.get("OPENROUTER_API_KEY")
       if not api_key:
-        st.error("Missing GEMINI_API_KEY in Streamlit Secrets")
+        st.error("Missing OPENROUTER_API_KEY in Streamlit Secrets")
       else:
         image_bytes = uploaded_file.getvalue()
         start_time = time.time()
@@ -200,7 +202,7 @@ with tab_verif:
                       name,
                       "Indonesian KTP",
                       val_status,
-                      "Gemini 1.5 Flash",
+                      "Llama-3.2-11b-Vision",
                       json.dumps(ocr_data),
                   ),
               )
@@ -303,7 +305,7 @@ with tab_history:
   except Exception as e:
     st.error(f"Failed to fetch history: {e}")
 
-# Footer (Links Updated!)
+# Footer
 st.markdown(
     """
     <style>
