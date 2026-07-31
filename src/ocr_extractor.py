@@ -72,13 +72,11 @@ def extract_ktp_data(image_bytes: bytes, api_key: str) -> dict:
 
     # Pengecekan error dari API
     if "error" in res_json:
-        error_msg = res_json["error"].get("message", "Unknown API error")
+        error_msg = res_json["error"].get("message", str(res_json["error"]))
         raise Exception(f"OpenRouter API Error: {error_msg}")
 
     if "choices" not in res_json or not res_json["choices"]:
-        raise Exception(
-            f"Gagal memproses gambar. Respon OpenRouter: {json.dumps(res_json)}"
-        )
+        raise Exception(f"Respon OpenRouter tidak valid: {res_json}")
 
     content = res_json["choices"][0]["message"]["content"].strip()
 
