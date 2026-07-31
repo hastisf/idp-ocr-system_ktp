@@ -250,6 +250,8 @@ with tab_verif:
               st.subheader("Extracted Information")
 
               fields = [
+                  ("PROVINCE", ocr_data.get("province")),
+                  ("REGENCY / CITY", ocr_data.get("regency_city")),
                   ("NIK", ocr_data.get("nik")),
                   ("NAME", ocr_data.get("name")),
                   ("BIRTH", ocr_data.get("place_and_date_of_birth")),
