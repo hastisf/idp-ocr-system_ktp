@@ -38,14 +38,13 @@ Use this exact schema:
   "expiry_date": null
 }
 
-Rules:
-
-- Return JSON only.
-- No markdown.
-- No explanation.
-- NIK must contain digits only.
+Rules & Specific Field Instructions:
+- "province": Extract the text right after "PROVINSI" from the header (e.g. "JAWA BARAT" or "DKI JAKARTA").
+- "regency_city": Extract the text right after "KABUPATEN" or "KOTA" from the header (e.g. "KOTA BANDUNG" or "JAKARTA SELATAN").
+- NIK must contain digits only without spaces or dots.
 - Gender must be Male or Female.
 - Nationality must be Indonesian or Foreigner.
+- Return JSON only, no markdown formatting, no explanations.
 """
 
     try:
