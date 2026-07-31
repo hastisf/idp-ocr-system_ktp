@@ -1,16 +1,13 @@
 import io
 import json
-import google.generativeai as genai
+from google import genai
 from PIL import Image
 
 
 def is_ktp(image_bytes: bytes, api_key: str) -> bool:
   """Classifies whether the uploaded image is an Indonesian KTP or not."""
   try:
-    genai.configure(api_key=api_key)
-    # Gunakan prefix 'models/' agar tidak bentrok dengan v1beta API
-    model = genai.GenerativeModel("gemini-1.5-flash-latest")
-
+    client = genai.Client(api_key=api_key)
     image = Image.open(io.BytesIO(image_bytes))
 
     prompt = (
@@ -21,7 +18,10 @@ def is_ktp(image_bytes: bytes, api_key: str) -> bool:
         " markdown formatting or extra text."
     )
 
-    response = model.generate_content([prompt, image])
+    response = client.models.generate_content(
+        model="gemini-2.5-flash", contents=[image, prompt]
+    )
+
     content = response.text.strip()
 
     if content.startswith("```"):
