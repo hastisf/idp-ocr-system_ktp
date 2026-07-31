@@ -23,7 +23,7 @@ def is_ktp(image_bytes: bytes, api_key: str) -> bool:
   )
 
   payload = {
-        "model": "google/gemini-2.0-flash-001",
+        "meta-llama/llama-3.2-11b-vision-instruct:free",
         "messages": [
             {
                 "role": "user",
