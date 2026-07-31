@@ -83,51 +83,46 @@ st.markdown(
         letter-spacing: 0.5px;
     }
 
-    /* FIX TAB NAVIGATION: DATABASE HISTORY KELIATAN TEBAL & ADA BACKGROUND */
+    /* FIX TAB DATABASE HISTORY & UPLOAD (Bikin Semua Teks Tab Sangat Jelas) */
     button[data-baseweb="tab"] {
-        font-size: 14px !important;
-        font-weight: 700 !important;
-        color: #1E293B !important;
         background-color: #E2E8F0 !important;
-        border-radius: 20px !important;
+        border-radius: 8px !important;
         padding: 8px 16px !important;
         margin-right: 8px !important;
         border: 1px solid #CBD5E1 !important;
     }
 
+    /* Paksa semua teks di dalam tombol tab berwarna hitam gelap & tebal */
+    button[data-baseweb="tab"] *, 
+    button[data-baseweb="tab"] p, 
+    button[data-baseweb="tab"] span {
+        color: #0F172A !important;
+        font-weight: 700 !important;
+        font-size: 14px !important;
+        opacity: 1 !important;
+    }
+
+    /* Tab yang sedang aktif */
     button[data-baseweb="tab"][aria-selected="true"] {
-        color: #FFFFFF !important;
         background-color: #2563EB !important;
         border-color: #2563EB !important;
     }
 
-    /* FIX DROPZONE UPLOADER & TEKS "Drop your KTP here..." */
-    div[data-testid="stFileUploader"] label {
-        font-size: 16px !important;
-        font-weight: 700 !important;
-        color: #0F172A !important;
-        margin-bottom: 8px !important;
-    }
-    
-    div[data-testid="stFileUploaderDropzone"] {
-        border: 2px dashed #94A3B8 !important;
-        background-color: #FFFFFF !important;
-        border-radius: 12px !important;
-        padding: 24px 10px !important;
-        text-align: center !important;
+    button[data-baseweb="tab"][aria-selected="true"] *,
+    button[data-baseweb="tab"][aria-selected="true"] p,
+    button[data-baseweb="tab"][aria-selected="true"] span {
+        color: #FFFFFF !important;
     }
 
-    /* TEKS INTRUKSI BIKIN JELAS, TEBAL & WARNA GELAP */
-    [data-testid="stFileUploaderDropzoneInstructions"],
-    [data-testid="stFileUploaderDropzoneInstructions"] div,
-    [data-testid="stFileUploaderDropzoneInstructions"] span {
-        color: #0F172A !important;
-        font-weight: 700 !important;
-        font-size: 14px !important;
-        display: block !important;
-    }   
+    /* BIKIN TEKS LIMIT FILE UPLOADER TEBAL & GELAP */
+    div[data-testid="stFileUploader"] small, 
+    div[data-testid="stFileUploader"] span, 
+    div[data-testid="stFileUploader"] p {
+        color: #334155 !important;
+        font-weight: 600 !important;
+    }
 
-    /* Styling Tombol Khusus */
+    /* Styling Tombol Process Document */
     div[data-testid="stVerticalBlock"] div.stButton > button {
         border: 1px solid #FF4B4B !important;
         background-color: #2b1114 !important;
