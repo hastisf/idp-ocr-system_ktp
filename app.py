@@ -109,12 +109,12 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-/* --- STYLING TOMBOL KHUSUS HP / HISTORY --- */
+/* Styling Tombol Khusus HP / History */
     div[data-testid="stVerticalBlock"] div.stButton > button {
-        border: 1px solid #ff4b4b !important;          /* Border merah terang */
-        background-color: #2b1114 !important;         /* Background merah soft gelap */
-        color: #ffffff !important;                     /* Teks putih jelas */
-        border-radius: 8px !important;                 /* Corner halus */
+        border: 1px solid #ff4b4b !important;
+        background-color: #2b1114 !important;
+        color: #ffffff !important;
+        border-radius: 8px !important;
         padding: 8px 12px !important;
         transition: all 0.3s ease !important;
     }
@@ -173,7 +173,7 @@ with tab_verif:
   uploaded_file = st.file_uploader(
       "Drop your KTP here or click to browse",
       type=["png", "jpg", "jpeg"],
-      label_visibility="collapsed",
+      label_visibility="visible",
   )
 
   if uploaded_file:
