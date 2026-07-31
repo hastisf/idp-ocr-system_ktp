@@ -8,7 +8,6 @@ def extract_ktp_data(image_bytes: bytes, api_key: str) -> dict:
   headers = {
       "Authorization": f"Bearer {api_key}",
       "Content-Type": "application/json",
-      # OpenRouter menyarankan menyertakan Referer agar request tidak ditolak
       "HTTP-Referer": "https://streamlit.io",
       "X-Title": "IDP KTP App",
   }
@@ -47,25 +46,23 @@ def extract_ktp_data(image_bytes: bytes, api_key: str) -> dict:
     4. Standardize nationality values to 'Indonesian' or 'Foreigner'.
     """
 
-  # Menggunakan model Gemini 2.0 Flash Lite (sangat cepat & murah/gratis)
+  # Menggunakan model Llama 3.2 Vision Gratis yang stabil & cepat
   payload = {
-        # Gunakan ID model yang aktif di OpenRouter ini:
-        "model": "google/gemini-2.0-flash-001", 
-        "messages": [
-            {
-                "role": "user",
-                "content": [
-                    {"type": "text", "text": prompt},
-                    {
-                        "type": "image_url",
-                        "image_url": {
-                            "url": f"data:image/jpeg;base64,{base64_image}"
-                        },
-                    },
-                ],
-            }
-        ],
-    }
+      "model": "meta-llama/llama-3.2-11b-vision-instruct:free",
+      "messages": [{
+          "role": "user",
+          "content": [
+              {"type": "text", "text": prompt},
+              {
+                  "type": "image_url",
+                  "image_url": {
+                      "url": f"data:image/jpeg;base64,{base64_image}"
+                  },
+              },
+          ],
+      }],
+  }
+
   response = requests.post(
       "https://openrouter.ai/api/v1/chat/completions",
       headers=headers,
@@ -73,17 +70,15 @@ def extract_ktp_data(image_bytes: bytes, api_key: str) -> dict:
   )
   res_json = response.json()
 
-  # Tangkap error OpenRouter dengan jelas
   if "error" in res_json:
     error_msg = res_json["error"].get("message", str(res_json["error"]))
     raise Exception(f"OpenRouter Error: {error_msg}")
 
   if "choices" not in res_json or not res_json["choices"]:
-    raise Exception(f"Respon OpenRouter tidak sesuai: {res_json}")
+    raise Exception(f"Respon OpenRouter tidak valid: {res_json}")
 
   content = res_json["choices"][0]["message"]["content"].strip()
 
-  # Cleaning markdown formatting jika AI memberikan tag markdown
   if content.startswith("```"):
     content = content.split("```")[1]
     if content.startswith("json"):
