@@ -7,7 +7,7 @@ import google.generativeai as genai
 def extract_ktp_data(image_bytes: bytes, api_key: str) -> dict:
   """Extracts KTP fields using official Google Gemini API."""
   genai.configure(api_key=api_key)
-  model = genai.GenerativeModel("gemini-1.5-flash")
+  model = genai.GenerativeModel("gemini-2.0-flash")
 
   image = Image.open(io.BytesIO(image_bytes))
 
