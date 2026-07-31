@@ -140,15 +140,15 @@ with tab_verif:
             <p style="color: #475569; font-size: 14px; line-height: 1.5; margin: 0;">
                 KTPVision AI is an intelligent document verification tool designed to automate Indonesian KTP processing. It instantly detects document validity, extracts key fields via Vision AI, performs data validation, and logs all entries securely.
             </p>
-            <div class="ai-badge">AI Model: Gemini 3.5 Flash Lite</div>
+            <div class="ai-badge">AI Model: Gemini 2.0 Flash</div>
         </div>
     """,
       unsafe_allow_html=True,
   )
 
-# Upload Document Section
-    st.markdown(
-        """
+  # Upload Document Section
+  st.markdown(
+      """
         <p style="margin-bottom: -15px; font-weight: 600; color: #1E293B; font-size: 14px;">
             Upload Document
         </p>
@@ -156,23 +156,23 @@ with tab_verif:
             Format: PNG, JPG, JPEG. Max: 200MB.
         </p>
     """,
-        unsafe_allow_html=True,
+      unsafe_allow_html=True,
+  )
+
+  uploaded_file = st.file_uploader(
+      "Drop your KTP here or click to browse",
+      type=["png", "jpg", "jpeg"],
+      label_visibility="collapsed",
+  )
+
+  if uploaded_file:
+    st.image(
+        uploaded_file, caption="Selected Document", use_container_width=True
     )
 
-    uploaded_file = st.file_uploader(
-        "Drop your KTP here or click to browse",
-        type=["png", "jpg", "jpeg"],
-        label_visibility="collapsed",
-    )
-
-    if uploaded_file:
-      st.image(
-          uploaded_file, caption="Selected Document", use_container_width=True
-      )
-
-    process_btn = st.button(
-        "Process Document", type="primary", use_container_width=True
-    )
+  process_btn = st.button(
+      "Process Document", type="primary", use_container_width=True
+  )
 
   # Verification Result Section
   st.subheader("Verification Result")
@@ -195,8 +195,8 @@ with tab_verif:
 
             if not is_ktp_doc:
               st.error(
-                  "Classification Failed: Uploaded document is NOT an Indonesian"
-                  " KTP."
+                  "Classification Failed: Uploaded document is NOT an"
+                  " Indonesian KTP."
               )
             else:
               # 2. OCR Extraction
