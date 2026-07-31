@@ -46,7 +46,7 @@ def extract_ktp_data(image_bytes: bytes, api_key: str) -> dict:
 
   # Menggunakan model Gemini Flash gratis di OpenRouter yang sangat cepat & stabil untuk OCR
   payload = {
-      "model": "google/gemini-2.0-flash-exp:free",
+      "model": "google/gemini-2.5-flash:free",
       "messages": [{
           "role": "user",
           "content": [
