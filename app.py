@@ -10,10 +10,14 @@ from src.database import init_db
 from src.ocr_extractor import extract_ktp_data
 from src.validator import validate_nik
 
+from PIL import Image
+
 # Configuration
+logo = Image.open("logo.png")
+
 st.set_page_config(
     page_title="KTPVision AI",
-    page_icon="logo.png",
+    page_icon=logo,
     layout="centered",
 )
 
