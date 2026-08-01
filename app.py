@@ -11,7 +11,14 @@ from src.ocr_extractor import extract_ktp_data
 from src.validator import validate_nik
 
 # Configuration
-st.set_page_config(page_title="KTPVision AI", layout="centered")
+st.set_page_config(
+    page_title="KTPVision AI",
+    page_icon="logo.png",
+    layout="centered",
+)
+
+# Initialize Database
+init_db()
 
 # Initialize Database
 init_db()
