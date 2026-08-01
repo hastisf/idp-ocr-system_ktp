@@ -1,34 +1,29 @@
-<p align="center">
-  <img src="logo.png" alt="KTPVision AI Logo" width="180">
-</p>
+<h1>
+  <img src="logo.png" alt="KTPVision AI Logo" width="42" align="center">
+  KTPVision AI
+</h1>
 
-<h1 align="center">KTPVision AI</h1>
+AI-powered Indonesian KTP verification system that automatically classifies Indonesian identity cards, extracts structured information using Google's Gemini Vision model, validates NIK consistency, and securely stores verification history in a local SQLite database.
 
-<p align="center">
-AI-powered Indonesian KTP verification system that classifies identity documents, extracts structured information using Google's Gemini Vision, validates NIK consistency, and securely stores verification history.
-</p>
+## 🚀 Live Demo
 
-<p align="center">
-
-**Live Demo:** https://idp-ocr-systemktp.streamlit.app/
-
-</p>
+**https://idp-ocr-systemktp.streamlit.app/**
 
 ---
 
-## Features
+## ✨ Features
 
-- AI-based Indonesian KTP classification
-- OCR information extraction using Gemini 3.5 Flash Lite
-- Automatic NIK validation
-- Structured information extraction
-- SQLite database logging
-- Verification history dashboard
-- Responsive Streamlit interface
+- 🤖 AI-powered Indonesian KTP classification
+- 📄 OCR-based identity information extraction using Gemini 3.5 Flash Lite
+- ✅ Automatic NIK validation and consistency checking
+- 🪪 Structured extraction of KTP identity fields
+- 🗄️ SQLite database logging for verification history
+- 📊 Interactive processing history dashboard
+- 📱 Responsive Streamlit web interface
 
 ---
 
-## Technology Stack
+## 🛠️ Tech Stack
 
 - Python
 - Streamlit
@@ -39,18 +34,18 @@ AI-powered Indonesian KTP verification system that classifies identity documents
 
 ---
 
-## Workflow
+## 🔄 Workflow
 
 1. Upload an Indonesian KTP image.
-2. AI classifies whether the document is a valid Indonesian KTP.
+2. AI verifies whether the uploaded document is a valid Indonesian KTP.
 3. Gemini Vision extracts structured identity information.
-4. NIK consistency is automatically validated.
+4. The extracted NIK is automatically validated.
 5. Verification results are displayed.
-6. Processing history is stored in SQLite.
+6. Verification history is stored in the SQLite database.
 
 ---
 
-## Extracted Information
+## 📋 Extracted Information
 
 - Province
 - Regency / City
@@ -70,26 +65,55 @@ AI-powered Indonesian KTP verification system that classifies identity documents
 
 ---
 
-## Installation
+## ⚙️ Installation
+
+Clone the repository:
 
 ```bash
 git clone https://github.com/hastisf/idp-ocr-system_ktp.git
 cd idp-ocr-system_ktp
-pip install -r requirements.txt
-streamlit run app.py
 ```
 
-Create a `.streamlit/secrets.toml` file:
+Install the required dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Create `.streamlit/secrets.toml`:
 
 ```toml
-GEMINI_API_KEY="YOUR_API_KEY"
+GEMINI_API_KEY="YOUR_GEMINI_API_KEY"
+```
+
+Run the application:
+
+```bash
+streamlit run app.py
 ```
 
 ---
 
-## Author
+## 📂 Project Structure
+
+```
+.
+├── app.py
+├── logo.png
+├── requirements.txt
+├── src/
+│   ├── classifier.py
+│   ├── database.py
+│   ├── ocr_extractor.py
+│   └── validator.py
+└── README.md
+```
+
+---
+
+## 👩‍💻 Author
 
 **Hasti Sri Fatmawati**
 
-- LinkedIn: https://www.linkedin.com/in/hasti-sri-fatmawati-361b49417/
-- GitHub: https://github.com/hastisf
+- 💼 LinkedIn: https://www.linkedin.com/in/hasti-sri-fatmawati-361b49417/
+- 💻 GitHub: https://github.com/hastisf
