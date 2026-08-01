@@ -45,7 +45,7 @@ CRITICAL RULES FOR PROVINCE & REGENCY/CITY:
 Rules & Specific Field Instructions:
 - NIK must contain digits only without spaces or dots.
 - Gender must be Male or Female.
-- Nationality must be Indonesian or Foreigner.
+- Nationality must be INDONESIAN or FOREIGNER.
 - Return JSON only, no markdown formatting, no explanations.
 """
 
