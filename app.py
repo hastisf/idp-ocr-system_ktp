@@ -205,6 +205,67 @@ with tab_verif:
               # 2. OCR Extraction
               ocr_data = extract_ktp_data(image_bytes, api_key)
 
+              # Translate occupation to English
+              occupation_map = {
+                  "BELUM/TIDAK BEKERJA": "Unemployed",
+                  "MENGURUS RUMAH TANGGA": "Homemaker",
+                  "PELAJAR/MAHASISWA": "Student",
+                  "PELAJAR": "Student",
+                  "MAHASISWA": "Student",
+                  "PENSIUNAN": "Retired",
+                  "PNS": "Civil Servant",
+                  "PEGAWAI NEGERI": "Civil Servant",
+                  "TNI": "Military Personnel",
+                  "POLRI": "Police Officer",
+                  "KARYAWAN SWASTA": "Private Employee",
+                  "PEGAWAI SWASTA": "Private Employee",
+                  "KARYAWAN BUMN": "State-Owned Enterprise Employee",
+                  "KARYAWAN BUMD": "Regional Government Enterprise Employee",
+                  "WIRASWASTA": "Entrepreneur",
+                  "PEDAGANG": "Trader",
+                  "PETANI": "Farmer",
+                  "NELAYAN": "Fisherman",
+                  "BURUH": "Laborer",
+                  "BURUH HARIAN LEPAS": "Daily Laborer",
+                  "GURU": "Teacher",
+                  "DOSEN": "Lecturer",
+                  "DOKTER": "Doctor",
+                  "PERAWAT": "Nurse",
+                  "BIDAN": "Midwife",
+                  "APOTEKER": "Pharmacist",
+                  "AKUNTAN": "Accountant",
+                  "ARSITEK": "Architect",
+                  "PENGACARA": "Lawyer",
+                  "NOTARIS": "Notary",
+                  "HAKIM": "Judge",
+                  "JAKSA": "Prosecutor",
+                  "KONSULTAN": "Consultant",
+                  "PROGRAMMER": "Programmer",
+                  "TEKNISI": "Technician",
+                  "MEKANIK": "Mechanic",
+                  "SOPIR": "Driver",
+                  "PILOT": "Pilot",
+                  "MASINIS": "Train Driver",
+                  "WARTAWAN": "Journalist",
+                  "SENIMAN": "Artist",
+                  "PENELITI": "Researcher",
+                  "PEKERJA LEPAS": "Freelancer",
+              }
+
+              if ocr_data.get("occupation"):
+                occupation = ocr_data["occupation"].strip().upper()
+                ocr_data["occupation"] = occupation_map.get(
+                    occupation,
+                    ocr_data["occupation"],
+                )
+
+              if (
+                  ocr_data.get("expiry_date")
+                  and ocr_data["expiry_date"].strip().upper() == "SEUMUR HIDUP"
+              ):
+                ocr_data["expiry_date"] = "Lifetime"
+                
+
               # 3. Validation
               nik = ocr_data.get("nik")
               gender = ocr_data.get("gender")
