@@ -20,9 +20,6 @@ st.set_page_config(
 # Initialize Database
 init_db()
 
-# Initialize Database
-init_db()
-
 # Custom CSS for clean UI
 st.markdown(
     """
@@ -205,6 +202,20 @@ with tab_verif:
               # 2. OCR Extraction
               ocr_data = extract_ktp_data(image_bytes, api_key)
 
+              marital_map = {
+                  "BELUM KAWIN": "SINGLE",
+                  "KAWIN": "MARRIED",
+                  "CERAI HIDUP": "DIVORCED",
+                  "CERAI MATI": "WIDOWED",
+              }
+              if ocr_data.get("marital_status"):
+                  marital = ocr_data["marital_status"].strip().upper()
+                  ocr_data["marital_status"] = marital_map.get(
+                      marital,
+                      ocr_data["marital_status"],
+                  )  
+
+          
               # Translate occupation to English
               occupation_map = {
                   "BELUM/TIDAK BEKERJA": "UNEMPLOYED",
